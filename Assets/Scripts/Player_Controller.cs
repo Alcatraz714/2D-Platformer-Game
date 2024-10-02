@@ -7,6 +7,7 @@ public class Player_Controller : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb2d;
+    public Score_Controller score_Controller;
     public float speed; // player horizontal speed
     public float jump; // player verical jump height
 
@@ -18,6 +19,12 @@ public class Player_Controller : MonoBehaviour
         // move and play the animation
         MoveCharacter(horizontal, vertical);
         MovementAnimation(horizontal, vertical);
+    }
+
+    public void PickupKey()
+    {
+        Debug.Log("key picked up by the player");
+        score_Controller.IncreaseScore();
     }
 
     private void MoveCharacter(float horizontal, float vertical)
