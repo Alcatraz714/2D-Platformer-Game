@@ -57,7 +57,7 @@ public class Enemy_Controller : MonoBehaviour
         if (other.gameObject.GetComponent<Player_Controller>() != null)
         {
             Player_Controller player_Controller = other.gameObject.GetComponent<Player_Controller>();
-            player_Controller.KillPlayer();
+            player_Controller.ReduceHP();
         }
     }
 }

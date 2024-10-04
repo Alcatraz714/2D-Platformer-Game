@@ -9,6 +9,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private Rigidbody2D rb2d;
     public Score_Controller score_Controller;
     public Level_Controller level_Controller;
+    public int HP = 3;
     public float speed; // player horizontal speed
     public float jump; // player verical jump height
 
@@ -25,6 +26,15 @@ public class Player_Controller : MonoBehaviour
         // move and play the animation
         MoveCharacter(horizontal, vertical);
         MovementAnimation(horizontal, vertical);
+    }
+
+    public void ReduceHP()
+    {
+        HP -= 1;
+        if (HP <= 0)
+        {
+            KillPlayer();
+        }
     }
 
     public void PickupKey()
