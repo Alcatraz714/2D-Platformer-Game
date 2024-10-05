@@ -257,5 +257,7 @@ MonoBehaviour:
   rb2d: {fileID: 1562867334526056944}
   score_Controller: {fileID: 0}
   level_Controller: {fileID: 0}
+  gameOver_Controller: {fileID: 0}
+  HP: 3
   speed: 10
   jump: 100

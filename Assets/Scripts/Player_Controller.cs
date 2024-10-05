@@ -9,6 +9,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private Rigidbody2D rb2d;
     public Score_Controller score_Controller;
     public Level_Controller level_Controller;
+    public GameOver_Controller gameOver_Controller;
     public int HP = 3;
     public float speed; // player horizontal speed
     public float jump; // player verical jump height
@@ -47,8 +48,9 @@ public class Player_Controller : MonoBehaviour
     {
         Debug.Log("Player died");
         animator.SetBool("Alive", false);
-        level_Controller.ReloadLevel();
-        //Destroy(gameObject);
+        gameOver_Controller.PlayerDied();
+        //level_Controller.ReloadLevel(); we want the level to reload after button press
+        this.enabled = false;
     }
 
     private void MoveCharacter(float horizontal, float vertical)
