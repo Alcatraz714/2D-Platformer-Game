@@ -15,7 +15,7 @@ public class Level_Controller : MonoBehaviour
         }
     }
 
-    void LoadNextLevel()
+    public void LoadNextLevel()
     {
         // Load the next scene based on the build index
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
