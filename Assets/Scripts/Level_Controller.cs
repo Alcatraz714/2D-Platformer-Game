@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Level_Controller : MonoBehaviour
 {
+    public GameObject LevelSelectorPopup;
     private void OnTriggerEnter2D(Collider2D other) 
     {
         //if collsion is with player 
@@ -20,6 +21,25 @@ public class Level_Controller : MonoBehaviour
         // Load the next scene based on the build index
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex + 1);
+    }
+
+    public void PlayGame()
+    {
+        LevelSelectorPopup.SetActive(true);// enable Popup
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+    public void BacktoLobby()
+    {
+        SceneManager.LoadScene(0); // in load order we have 0 as the build index for the lobby
     }
 
     public void ReloadLevel()
