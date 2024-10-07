@@ -11,8 +11,8 @@ public class Level_Controller : MonoBehaviour
         //if collsion is with player 
         if(other.gameObject.GetComponent<Player_Controller>() != null)
         {
-            Debug.Log("PLayer has finished the lvl");
-            LoadNextLevel(); // we dont have a next level but this where we add new levels in order in project settings
+            Debug.Log("Player has finished the lvl");
+            LevelManager.Instance.MarkCurrentLevelComplete();
         }
     }
 
