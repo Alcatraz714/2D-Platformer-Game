@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Level_Controller : MonoBehaviour
 {
     public GameObject LevelSelectorPopup;
+    public GameObject LevelCompleteScreen;
     private void OnTriggerEnter2D(Collider2D other) 
     {
         //if collsion is with player 
@@ -13,6 +14,7 @@ public class Level_Controller : MonoBehaviour
         {
             Debug.Log("Player has finished the lvl");
             LevelManager.Instance.MarkCurrentLevelComplete();
+            LevelCompleteScreen.SetActive(true);
         }
     }
 
@@ -25,6 +27,7 @@ public class Level_Controller : MonoBehaviour
 
     public void PlayGame()
     {
+        SoundManager.Instance.PlaySound(Sounds.ButtonClick);
         LevelSelectorPopup.SetActive(true);// enable Popup
     }
 

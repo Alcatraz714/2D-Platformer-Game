@@ -15,14 +15,16 @@ public class LevelLoader : MonoBehaviour
         switch(levelStatus)
         {
             case LevelStatus.Locked:
-                Debug.Log("Level is locked please complete the level prior to this one");
-                break;
+            Debug.Log("Level is locked please complete the level prior to this one");
+            break;
 
             case LevelStatus.Unlocked:
+            SoundManager.Instance.PlaySound(Sounds.ButtonClick);
             SceneManager.LoadScene(LevelName);
             break;
 
             case LevelStatus.Completed:
+            SoundManager.Instance.PlaySound(Sounds.ButtonClick);
             SceneManager.LoadScene(LevelName);
             break;
 
