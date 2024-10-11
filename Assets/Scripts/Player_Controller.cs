@@ -12,7 +12,10 @@ public class Player_Controller : MonoBehaviour
     public GameOver_Controller gameOver_Controller;
     public int HP = 3;
     public float speed; // player horizontal speed
-    public float jump; // player verical jump height
+    public float jump; // player vertical jump height
+
+    private int jumpCount = 0; // Track how many jumps the player has made
+    private bool canDoubleJump = false; // To check if the player can double jump
 
     private void Awake() 
     {
@@ -23,10 +26,18 @@ public class Player_Controller : MonoBehaviour
     private void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Jump");
+        bool jumpPressed = Input.GetButtonDown("Jump"); 
+
+        // Reset jump count when player is falling slowly or grounded (we assume this means they've landed)
+        if (rb2d.velocity.y == 0)
+        {
+            jumpCount = 0;
+            canDoubleJump = true;
+        }
+
         // move and play the animation
-        MoveCharacter(horizontal, vertical);
-        MovementAnimation(horizontal, vertical);
+        MoveCharacter(horizontal, jumpPressed);
+        MovementAnimation(horizontal);
     }
 
     public void ReduceHP()
@@ -49,25 +60,30 @@ public class Player_Controller : MonoBehaviour
         Debug.Log("Player died");
         animator.SetBool("Alive", false);
         gameOver_Controller.PlayerDied();
-        //level_Controller.ReloadLevel(); we want the level to reload after button press
         this.enabled = false;
     }
 
-    private void MoveCharacter(float horizontal, float vertical)
+    private void MoveCharacter(float horizontal, bool jumpPressed)
     {
         // Horizontal - move
         Vector3 position = transform.position; //local variable to store player position
-        position.x = position.x + horizontal*speed*Time.deltaTime; // get the horizontal part of the vector - distance = speed * time * our raw input
+        position.x = position.x + horizontal * speed * Time.deltaTime; // get the horizontal part of the vector
         transform.position = position; // add the new x part to the existing x position
 
-        // Vertical - jump
-        if(vertical >0)
+        // Jump logic
+        if (jumpPressed && jumpCount < 1)
         {
-            rb2d.AddForce(new Vector2(0f, jump), ForceMode2D.Force);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jump); // First jump
+            jumpCount++;
+        }
+        else if (jumpPressed && jumpCount == 1 && canDoubleJump)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jump); // Double jump
+            canDoubleJump = false; // Disable further jumps until grounded
         }
     }
 
-    private void MovementAnimation(float horizontal, float vertical)
+    private void MovementAnimation(float horizontal)
     {
         // For horizontal movement
         animator.SetFloat("Speed", Math.Abs(horizontal));
@@ -83,14 +99,7 @@ public class Player_Controller : MonoBehaviour
         }
         transform.localScale = scale;
         
-        // for Jump
-        if(vertical >0)
-        {
-            animator.SetBool("Jump", true);
-        }
-        else
-        {
-            animator.SetBool("Jump", false);
-        }   
+        // Set Jumping animation based on vertical velocity
+        animator.SetBool("Jump", rb2d.velocity.y != 0);   
     }
 }
